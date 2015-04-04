@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -13,40 +12,68 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     </head>
-    <body ng-app="chat">
+    <body id='ng-app' ng-app="photo">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div ng-controller="ChatCtrl">
-        	<div ng-repeat="comment in comments">
-        		<span><b>{{comment.from}}: </b><br/> {{comment.body}}</span><br>
-        	</div>
-
-        	<textarea ng-model="newComment" ng-keydown="addComment($event)"></textarea>  
+        <img 
+    		data-caman="brightness(brightness.value) contrast(contrast.value) sepia(sepia.value) saturation(saturation.value)"
+    		src="cat.jpg">
+    		
+        <div ng-controller="PhotoCtrl">
+        	<h3>Brightness
+			<slider
+    			ng-model="brightness"
+    			floor="-100"
+    			ceiling="100"
+    			step="1"
+    			precision="0"
+    			stretch="1">
+			</slider>
+			</h3>
+			<h3>Contrast
+			<slider
+    			ng-model="contrast"
+    			floor="-100"
+    			ceiling="100"
+    			step="1"
+    			precision="0"
+    			stretch="1">
+			</slider>
+			</h3>
+			<h3>Sepia
+			<slider
+    			ng-model="sepia"
+    			floor="0"
+    			ceiling="100"
+    			step="1"
+    			precision="0"
+    			stretch="1">
+			</slider>
+			</h3>
+			<h3>Saturation
+			<slider
+    			ng-model="saturation"
+    			floor="-100"
+    			ceiling="100"
+    			step="1"
+    			precision="0"
+    			stretch="1">
+			</slider>
+			</h3>
         </div>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
-		<script src="https://cdn.firebase.com/v0/firebase.js"></script>
-		<script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+		
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
+		<script src="angular-slider.js"></script>
 		<script type="text/javascript">
-		  angular.module('chat', ['firebase'])
-		  .controller('ChatCtrl', function ($scope, $firebase) {
-		  	var ref = new Firebase('https://burning-heat-294.firebaseio.com/');
-		  	 $scope.comments = $firebase(ref);
-		  	 $scope.addComment = function(e) {
-		  	 	$scope.username = 'Guest ' + Math.floor(Math.random() * 101);
-
-		  	 	if (e.keyCode !== 13) return;
-		  	 	$scope.comments.$add({
-		  	 		from: $scope.username,
-		  	 		body: $scope.newComment
-		  	 	});
-
-		  	 	$scope.newComment = "";
-		  	 };
-		  });
+	  		angular.module('photo', ['vr.directives.slider']).controller('PhotoCtrl', ['$scope', function($scope) {
+		    	$scope.value = 0;
+		    
+		    }]);
 		</script>
     </body>
 </html>
