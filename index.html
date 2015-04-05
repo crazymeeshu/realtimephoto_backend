@@ -1,16 +1,68 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <title>Real Time Photo</title>
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/spruce/bootstrap.min.css">-->
+    <style>
+		slider {
+			display:     block;
+			position:    relative;
+			height:      30px;
+			width:       500px;
+		}
+		slider span.bar {
+			height:     50%;
+			z-index:    0;
+			background: #eee;
+			left:       0;
+			top:        25%;
+			cursor:     pointer;
+		}
+		slider span.bar.selection, slider span.bar.unselected {
+		}
+		slider span.bar.selection {
+			background: #0a0;
+			opacity:    0.5;
+		}
+		slider span.bar.unselected {
+			width:      auto;
+			background: #a00;
+			opacity:    0.5;
+		}
+		slider span.pointer {
+			cursor:           pointer;
+			width:            15px;
+			top:              0;
+			bottom:           0;
+			background-color: #00a;
+		}
+		slider span.pointer:hover {
+		}
+		slider span.pointer.active {
+		}
+		slider span.bubble {
+			font-size:   0.7em;
+			line-height: 1.4em;
+			font-family: sans-serif;
+			text-align:  center;
+			text-shadow: none;
+			top:         2.2em;
+			cursor:      pointer;
+		}
+		slider span.bubble.selection, slider span.bubble.limit {
+			top: 25%;
+		}
+		slider span.bubble.selection {
+		}
+		slider span.bubble.limit {
+		}
+		slider span.bubble.low, slider span.bubble.high {
+		}
+		
+		::-ms-tooltip {
+			display: none;
+		}
+    </style>
     </head>
     <body id='ng-app' ng-app="photo">
         <!--[if lt IE 7]>
@@ -18,62 +70,82 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <img 
-    		data-caman="brightness(brightness.value) contrast(contrast.value) sepia(sepia.value) saturation(saturation.value)"
-    		src="cat.jpg">
-    		
         <div ng-controller="PhotoCtrl">
+        	<!-- Image -->
+        	<img 
+    			data-caman="brightness(bright) contrast(cont) sepia(sep) saturation(sat)"
+    			src="cat.jpg">
+    		<!-- Brightness slider -->
         	<h3>Brightness
 			<slider
-    			ng-model="brightness"
-    			floor="-100"
-    			ceiling="100"
-    			step="1"
-    			precision="0"
-    			stretch="1">
-			</slider>
-			</h3>
+				ng-model='bright' 
+				floor='-100' 
+				ceiling='100' 
+				step='1' 
+				precision='0' 
+				stickiness='0'>
+            </slider>
+            </h3>
+            <!-- Contrast slider -->
 			<h3>Contrast
 			<slider
-    			ng-model="contrast"
-    			floor="-100"
-    			ceiling="100"
-    			step="1"
-    			precision="0"
-    			stretch="1">
+    			ng-model='cont' 
+				floor='-100' 
+				ceiling='100' 
+				step='1' 
+				precision='0' 
+				stickiness='0'>
 			</slider>
 			</h3>
+			<!-- Sepia slider -->
 			<h3>Sepia
 			<slider
-    			ng-model="sepia"
-    			floor="0"
-    			ceiling="100"
-    			step="1"
-    			precision="0"
-    			stretch="1">
+    			ng-model='sep' 
+				floor='0' 
+				ceiling='100' 
+				step='1' 
+				precision='0' 
+				stickiness='0'>
 			</slider>
 			</h3>
+			<!-- Saturation slider -->
 			<h3>Saturation
 			<slider
-    			ng-model="saturation"
-    			floor="-100"
-    			ceiling="100"
-    			step="1"
-    			precision="0"
-    			stretch="1">
+    			ng-model='sat' 
+				floor='-100' 
+				ceiling='100' 
+				step='1' 
+				precision='0' 
+				stickiness='0'>
 			</slider>
 			</h3>
         </div>
 		
+		<!-- Scripts -->
+		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
-		<script src="angular-slider.js"></script>
-		<script type="text/javascript">
-	  		angular.module('photo', ['vr.directives.slider']).controller('PhotoCtrl', ['$scope', function($scope) {
-		    	$scope.value = 0;
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-touch.min.js"></script>
+		<script src="build/angular-slider.min.js"></script>
+    	<script src="src/rangeInputSupported.js"></script>
+    	<script src="src/angular-slider.js"></script>
+	  	<script>
+		    function dump(obj) {
+			    var out = '';
+			    for(var i in obj) {
+				    out += i + ": " + obj[i] + "\n";
+			    }
+			    return out;
+		    }
 		    
-		    }]);
-		</script>
+		    angular.module('photo', ['vr.directives.slider']).controller('PhotoCtrl', ['$scope', function($scope){
+			    $scope.bright = 0;
+			    $scope.cont = 0;
+			    $scope.sep = 0;
+			    $scope.sat = 0;
+			    
+			}]);
+			
+    </script>
     </body>
 </html>
