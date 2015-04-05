@@ -46,7 +46,7 @@
 			font-family: sans-serif;
 			text-align:  center;
 			text-shadow: none;
-			top:         2.2em;
+			top:         2.7em;
 			cursor:      pointer;
 		}
 		slider span.bubble.selection, slider span.bubble.limit {
@@ -72,53 +72,52 @@
         <!-- Add your site or application content here -->
         <div ng-controller="PhotoCtrl">
         	<!-- Image -->
-        	<img 
-    			data-caman="brightness(bright) contrast(cont) sepia(sep) saturation(sat)"
-    			src="cat.jpg">
+        	<!-- <img 
+    			data-caman="brightness({bright}) contrast(cont) sepia(sep) saturation(sat)"
+    			src="cat.jpg"> -->
+
+    		<img id="cat-pic" src="cat.jpg">
+
     		<!-- Brightness slider -->
-        	<h3>Brightness
+        	<h3>Brightness</h3>
 			<slider
 				ng-model='bright' 
-				floor='-100' 
-				ceiling='100' 
+				floor='-5' 
+				ceiling='5' 
 				step='1' 
 				precision='0' 
 				stickiness='0'>
             </slider>
-            </h3>
             <!-- Contrast slider -->
-			<h3>Contrast
+			<h3>Contrast</h3>
 			<slider
     			ng-model='cont' 
-				floor='-100' 
-				ceiling='100' 
+				floor='-5' 
+				ceiling='5' 
 				step='1' 
 				precision='0' 
 				stickiness='0'>
 			</slider>
-			</h3>
 			<!-- Sepia slider -->
-			<h3>Sepia
+			<h3>Sepia</h3>
 			<slider
     			ng-model='sep' 
 				floor='0' 
-				ceiling='100' 
+				ceiling='15' 
 				step='1' 
 				precision='0' 
 				stickiness='0'>
 			</slider>
-			</h3>
 			<!-- Saturation slider -->
-			<h3>Saturation
+			<h3>Saturation</h3>
 			<slider
     			ng-model='sat' 
-				floor='-100' 
-				ceiling='100' 
+				floor='-10' 
+				ceiling='10' 
 				step='1' 
 				precision='0' 
 				stickiness='0'>
 			</slider>
-			</h3>
         </div>
 		
 		<!-- Scripts -->
@@ -144,6 +143,38 @@
 			    $scope.sep = 0;
 			    $scope.sat = 0;
 			    
+			    $scope.$watch('bright', function(newVal, oldVal){
+				    Caman('#cat-pic', function () {
+					    this.brightness(newVal).render();
+				 	});
+				 });
+				 
+				 $scope.$watch('cont', function(newVal, oldVal){
+				    Caman('#cat-pic', function () {
+					    this.contrast(newVal).render();
+				 	});
+				 });
+				 
+				 $scope.$watch('sep', function(newVal, oldVal){
+				    Caman('#cat-pic', function () {
+					    this.sepia(newVal).render();
+				 	});
+				 });
+				 
+				 $scope.$watch('sat', function(newVal, oldVal){
+				    Caman('#cat-pic', function () {
+					    this.saturation(newVal).render();
+				 	});
+				 });
+
+
+			    Caman('#cat-pic', function () {
+				    this.brightness($scope.bright);
+				    this.contrast($scope.cont);
+				    this.sepia($scope.sep);
+				    this.saturation($scope.sat);
+				    this.render();
+				 });
 			}]);
 			
     </script>
